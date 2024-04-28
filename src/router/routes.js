@@ -1,5 +1,7 @@
 import MainLayout from "layouts/MainLayout.vue";
-import ProductNew from "pages/ProductNew.vue";
+import CrudLayout from "src/layouts/CrudLayout.vue";
+import ProductsList from "pages/ProductsList.vue";
+import NewProduct from "src/pages/NewProduct.vue";
 
 const routes = [
   {
@@ -8,7 +10,17 @@ const routes = [
     children: [
       {
         path: "produtos",
-        component: ProductNew,
+        component: CrudLayout,
+        children: [
+          {
+            path: "",
+            component: ProductsList,
+          },
+          {
+            path: "novo",
+            component: NewProduct,
+          },
+        ],
       },
     ],
   },

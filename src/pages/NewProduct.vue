@@ -36,6 +36,13 @@
 
 <script setup>
 import { ref } from "vue";
+import { useQuasar } from "quasar";
+import { nanoid } from "nanoid";
+import { api } from "src/boot/axios";
+import { useRouter } from "vue-router";
+
+const $q = useQuasar();
+const router = useRouter();
 
 const description = ref(null);
 const sku = ref(null);
@@ -44,12 +51,57 @@ const costPrice = ref(0);
 const salesPrice = ref(0);
 const quantityInStock = ref(0);
 
+function postProduct({
+  description,
+  sku,
+  manufacturer,
+  costPrice,
+  salesPrice,
+  quantityInStock,
+}) {
+  const id = nanoid();
+  api
+    .post("/products", {
+      id,
+      description,
+      sku,
+      manufacturer,
+      cost: costPrice,
+      price: salesPrice,
+      quantity: quantityInStock,
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        $q.notify({
+          message: "Produto cadastrado com sucesso! Redirecionando...",
+          color: "positive",
+          icon: "done",
+        });
+        setTimeout(() => {
+          router.push({
+            path: "/produtos",
+            replace: true,
+          });
+        }, 5000);
+      }
+    })
+    .catch(() => {
+      $q.notify({
+        message: "Falha ao cadastrar produto",
+        color: "negative",
+        icon: "report_problem",
+      });
+    });
+}
+
 function onSubmit() {
-  console.log(description.value);
-  console.log(sku.value);
-  console.log(manufacturer.value);
-  console.log(costPrice.value);
-  console.log(salesPrice.value);
-  console.log(quantityInStock.value);
+  postProduct({
+    description: description.value,
+    sku: sku.value,
+    manufacturer: manufacturer.value,
+    costPrice: costPrice.value,
+    salesPrice: salesPrice.value,
+    quantityInStock: quantityInStock.value,
+  });
 }
 </script>

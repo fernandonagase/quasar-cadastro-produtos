@@ -1,4 +1,30 @@
 <script setup>
+import { onMounted, ref } from "vue";
+import { useQuasar } from "quasar";
+import { api } from "src/boot/axios";
+
+const $q = useQuasar();
+const products = ref([]);
+
+function loadProducts() {
+  api
+    .get("/products")
+    .then((response) => {
+      products.value = response.data;
+    })
+    .catch(() => {
+      $q.notify({
+        message: "Falha ao carregar lista de produtos",
+        color: "negative",
+        icon: "report_problem",
+      });
+    });
+}
+
+onMounted(() => {
+  loadProducts();
+});
+
 const columns = [
   { name: "id", field: "id", required: true, label: "Id" },
   {
@@ -17,34 +43,8 @@ const columns = [
   },
   { name: "quantity", field: "quantity", label: "Quantidade em estoque" },
 ];
-const rows = [
-  {
-    id: 1,
-    description: "Camiseta",
-    manufacturer: "Mike",
-    cost: 20,
-    price: 99.99,
-    quantity: 100,
-  },
-  {
-    id: 2,
-    description: "Bermuda",
-    manufacturer: "Guma",
-    cost: 50,
-    price: 120,
-    quantity: 100,
-  },
-  {
-    id: 3,
-    description: "Boné",
-    manufacturer: "Bering",
-    cost: 10,
-    price: 50,
-    quantity: 200,
-  },
-];
 </script>
 
 <template>
-  <q-table title="Produtos" :columns="columns" :rows="rows" row-key="id" />
+  <q-table title="Produtos" :columns="columns" :rows="products" row-key="id" />
 </template>

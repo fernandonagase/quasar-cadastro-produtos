@@ -2,6 +2,7 @@ import MainLayout from "layouts/MainLayout.vue";
 import CrudLayout from "src/layouts/CrudLayout.vue";
 import ProductsList from "pages/ProductsList.vue";
 import NewProduct from "src/pages/NewProduct.vue";
+import EditProduct from "src/pages/EditProduct.vue";
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
           {
             path: "novo",
             component: NewProduct,
+          },
+          {
+            path: ":userid",
+            name: "product-edit",
+            component: EditProduct,
           },
         ],
       },

@@ -29,6 +29,7 @@
         label="Qtd. Estoque"
         type="number"
       />
+      <div class="q-pa-md"><q-checkbox v-model="active" label="Ativo" /></div>
       <q-btn type="submit" color="primary" label="Salvar produto" />
     </q-form>
   </q-page>
@@ -49,6 +50,7 @@ const manufacturer = ref(null);
 const costPrice = ref(0);
 const salesPrice = ref(0);
 const quantityInStock = ref(0);
+const active = ref(false);
 
 function loadProduct() {
   api
@@ -60,13 +62,15 @@ function loadProduct() {
       costPrice.value = response.data.cost;
       salesPrice.value = response.data.price;
       quantityInStock.value = response.data.quantity;
+      active.value = response.data.active;
     })
-    .catch(() => {
+    .catch((error) => {
       $q.notify({
         message: "Erro ao carregar produto",
         color: "negative",
         icon: "report_problem",
       });
+      console.error(error);
     });
 }
 
@@ -82,6 +86,7 @@ function updateProduct({
   costPrice,
   salesPrice,
   quantityInStock,
+  active,
 }) {
   api
     .put(`products/${id}`, {
@@ -92,6 +97,7 @@ function updateProduct({
       cost: costPrice,
       price: salesPrice,
       quantity: quantityInStock,
+      active,
     })
     .then((response) => {
       if (response.status === 200) {
@@ -120,6 +126,7 @@ function onSubmit() {
     costPrice: costPrice.value,
     salesPrice: salesPrice.value,
     quantityInStock: quantityInStock.value,
+    active: active.value,
   });
 }
 </script>

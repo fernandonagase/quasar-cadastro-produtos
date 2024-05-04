@@ -10,7 +10,7 @@ function loadProducts() {
   api
     .get("/products")
     .then((response) => {
-      products.value = response.data;
+      products.value = response.data.filter((product) => product.active);
     })
     .catch(() => {
       $q.notify({

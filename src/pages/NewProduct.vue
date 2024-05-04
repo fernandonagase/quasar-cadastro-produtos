@@ -69,6 +69,7 @@ function postProduct({
       cost: costPrice,
       price: salesPrice,
       quantity: quantityInStock,
+      active: true,
     })
     .then((response) => {
       if (response.status === 201) {

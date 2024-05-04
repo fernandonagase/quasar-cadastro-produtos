@@ -9,8 +9,10 @@
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
-    "build": "quasar build"
+    "quasar:dev": "quasar dev",
+    "quasar:build": "quasar build",
+    "server": "json-server db.json",
+    "start": "concurrently \"yarn:server\" \"yarn:quasar:dev\" --kill-others"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@quasar/app-vite": "^1.8.0",
     "autoprefixer": "^10.4.2",
+    "concurrently": "^8.2.2",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",

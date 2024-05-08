@@ -1,9 +1,13 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { useQuasar } from "quasar";
+import { useMeta, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 
 import VisuallyHidden from "src/components/VisuallyHidden.vue";
+
+useMeta({
+  title: "Listagem de produtos",
+});
 
 const $q = useQuasar();
 const products = ref([]);

@@ -12,7 +12,14 @@
     <q-drawer v-model="leftDrawerOpen" side="left" bordered class="bg-grey-2">
       <!-- QScrollArea is optional -->
       <q-scroll-area class="fit q-pa-sm">
-        <!-- Content here -->
+        <q-list>
+          <q-item clickable to="/">
+            <q-item-section>Início</q-item-section>
+          </q-item>
+          <q-item clickable to="/produtos">
+            <q-item-section>Produtos</q-item-section>
+          </q-item>
+        </q-list>
       </q-scroll-area>
     </q-drawer>
 

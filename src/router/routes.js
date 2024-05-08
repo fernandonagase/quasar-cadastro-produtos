@@ -40,6 +40,22 @@ const routes = [
           ],
         },
       },
+      {
+        path: "clientes",
+        component: CrudLayout,
+        children: [
+          {
+            path: "",
+            component: () => import("pages/ClientsList.vue"),
+          },
+        ],
+        meta: {
+          breadcrumb: [
+            { order: 1, name: "Início", link: "/" },
+            { order: 2, name: "Clientes", link: "/clientes" },
+          ],
+        },
+      },
     ],
   },
   // Always leave this as last one,

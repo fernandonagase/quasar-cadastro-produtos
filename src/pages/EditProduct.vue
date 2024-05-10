@@ -39,7 +39,11 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { api } from "src/boot/axios";
-import { useQuasar } from "quasar";
+import { useMeta, useQuasar } from "quasar";
+
+useMeta({
+  title: "Alteração de produto",
+});
 
 const $q = useQuasar();
 const route = useRoute();

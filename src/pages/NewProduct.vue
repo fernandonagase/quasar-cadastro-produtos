@@ -36,10 +36,14 @@
 
 <script setup>
 import { ref } from "vue";
-import { useQuasar } from "quasar";
+import { useMeta, useQuasar } from "quasar";
 import { nanoid } from "nanoid";
 import { api } from "src/boot/axios";
 import { useRouter } from "vue-router";
+
+useMeta({
+  title: "Cadastro de produto",
+});
 
 const $q = useQuasar();
 const router = useRouter();

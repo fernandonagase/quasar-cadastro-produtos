@@ -1,6 +1,13 @@
 <template>
   <q-page padding>
-    <CrudTable title="Vendas" :columns="columns" :rows="saleRows"></CrudTable>
+    <CrudTable title="Vendas" :columns="columns" :rows="sales">
+      <template #bottomRow>
+        <q-tr>
+          <q-td colspan="3"></q-td>
+          <q-td class="text-right">R$ {{ totalSales }}</q-td>
+        </q-tr>
+      </template>
+    </CrudTable>
   </q-page>
 </template>
 
@@ -8,7 +15,7 @@
 import { useMeta } from "quasar";
 import { computed, onMounted, ref } from "vue";
 
-import { getSales } from "src/services/saleService";
+import { getSaleSummaryList } from "src/services/saleService";
 import CrudTable from "src/components/CrudTable.vue";
 
 useMeta({
@@ -17,6 +24,7 @@ useMeta({
 
 const columns = [
   { name: "id", field: "id", label: "Id", required: true },
+  { name: "client", field: "client", label: "Cliente", required: true },
   { name: "date", field: "date", label: "Data", required: true },
   {
     name: "totalPrice",
@@ -27,19 +35,12 @@ const columns = [
 ];
 
 const sales = ref([]);
-const saleRows = computed(() => {
-  return sales.value.map((sale) => ({
-    id: sale.id,
-    date: new Date(sale.date).toLocaleDateString(),
-    totalPrice: sale.items.reduce(
-      (acc, item) => acc + item.quantity * item.price,
-      0
-    ),
-  }));
-});
+const totalSales = computed(() =>
+  sales.value.reduce((acc, sale) => acc + sale.totalPrice, 0)
+);
 
 async function loadSales() {
-  sales.value = await getSales();
+  sales.value = await getSaleSummaryList();
 }
 
 onMounted(() => {

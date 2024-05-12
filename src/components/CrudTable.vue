@@ -10,6 +10,9 @@
         <slot name="rowActions" :row="props.row"></slot>
       </q-td>
     </template>
+    <template #bottom-row>
+      <slot name="bottomRow"></slot>
+    </template>
     <slot></slot>
   </q-table>
 </template>

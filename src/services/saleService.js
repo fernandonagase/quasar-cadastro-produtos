@@ -1,4 +1,5 @@
 import { api } from "boot/axios";
+import { getClientById } from "./clientService";
 
 const endpoint = "sales";
 
@@ -7,4 +8,23 @@ async function getSales() {
   return sales;
 }
 
-export { getSales };
+async function getSaleSummaryList() {
+  const sales = await getSales();
+
+  return Promise.all(
+    sales.map(async ({ id, clientid, date, items }) => {
+      const dateObj = new Date(date);
+      return {
+        id,
+        client: (await getClientById(clientid)).name,
+        date: `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`,
+        totalPrice: items.reduce(
+          (acc, item) => acc + item.quantity * item.price,
+          0
+        ),
+      };
+    })
+  );
+}
+
+export { getSales, getSaleSummaryList };

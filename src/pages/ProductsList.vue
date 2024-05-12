@@ -54,14 +54,14 @@ const columns = [
 
 <template>
   <q-table title="Produtos" :columns="columns" :rows="products" row-key="id">
-    <template v-slot:top>
+    <template #top>
       <div class="q-ml-auto">
         <q-btn to="/produtos/novo" color="primary" icon="add">
           Novo <VisuallyHidden>produto</VisuallyHidden>
         </q-btn>
       </div>
     </template>
-    <template v-slot:body-cell-actions="props">
+    <template #body-cell-actions="props">
       <q-td :props="props">
         <q-btn
           :to="{ name: 'product-edit', params: { userid: props.row.id } }"

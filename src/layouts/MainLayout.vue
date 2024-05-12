@@ -19,6 +19,9 @@
           <q-item clickable to="/produtos">
             <q-item-section>Produtos</q-item-section>
           </q-item>
+          <q-item clickable to="/clientes">
+            <q-item-section>Clientes</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>

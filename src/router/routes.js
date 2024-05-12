@@ -40,6 +40,37 @@ const routes = [
           ],
         },
       },
+      {
+        path: "clientes",
+        component: CrudLayout,
+        children: [
+          {
+            path: "",
+            component: () => import("pages/ClientsList.vue"),
+          },
+          {
+            path: "novo",
+            component: () => import("pages/NewClient.vue"),
+            meta: {
+              breadcrumb: [{ order: 3, name: "Cadastro de cliente" }],
+            },
+          },
+          {
+            path: ":clientid",
+            name: "client-edit",
+            component: () => import("pages/EditClient.vue"),
+            meta: {
+              breadcrumb: [{ order: 3, name: "Alteração de cliente" }],
+            },
+          },
+        ],
+        meta: {
+          breadcrumb: [
+            { order: 1, name: "Início", link: "/" },
+            { order: 2, name: "Clientes", link: "/clientes" },
+          ],
+        },
+      },
     ],
   },
   // Always leave this as last one,

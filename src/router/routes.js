@@ -48,6 +48,21 @@ const routes = [
             path: "",
             component: () => import("pages/ClientsList.vue"),
           },
+          {
+            path: "novo",
+            component: () => import("pages/NewClient.vue"),
+            meta: {
+              breadcrumb: [{ order: 3, name: "Cadastro de cliente" }],
+            },
+          },
+          {
+            path: ":clientid",
+            name: "client-edit",
+            component: () => import("pages/EditClient.vue"),
+            meta: {
+              breadcrumb: [{ order: 3, name: "Alteração de cliente" }],
+            },
+          },
         ],
         meta: {
           breadcrumb: [

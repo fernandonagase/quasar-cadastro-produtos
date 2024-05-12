@@ -1,6 +1,24 @@
 <template>
   <q-page padding>
-    <CrudTable title="Clientes" :columns="columns" :rows="products"></CrudTable>
+    <CrudTable title="Clientes" :columns="columns" :rows="clients">
+      <template #topActions>
+        <q-btn to="/clientes/novo" color="primary" icon="add">
+          Novo <VisuallyHidden>produto</VisuallyHidden>
+        </q-btn>
+      </template>
+      <template #rowActions="{ row }">
+        <q-btn
+          :to="{ name: 'client-edit', params: { clientid: row.id } }"
+          color="primary"
+          icon="edit"
+          :aria-labelledby="`edit-label-${row.id}`"
+        >
+          <span :id="`edit-label-${row.id}`" hidden>
+            Ver ou alterar {{ row.name }}
+          </span>
+        </q-btn>
+      </template>
+    </CrudTable>
   </q-page>
 </template>
 
@@ -10,21 +28,21 @@ import { useMeta, useQuasar } from "quasar";
 
 import CrudTable from "components/CrudTable.vue";
 import { getClients } from "src/services/clientService";
+import VisuallyHidden from "src/components/VisuallyHidden.vue";
 
 useMeta({
   title: "Listagem de clientes",
 });
 
 const $q = useQuasar();
-const products = ref([]);
+const clients = ref([]);
 
-async function loadProducts() {
+async function loadClients() {
   try {
-    const clients = await getClients();
-    products.value = clients.filter((product) => product.active);
+    clients.value = (await getClients()).filter((product) => product.active);
   } catch (e) {
     $q.notify({
-      message: "Falha ao carregar lista de produtos",
+      message: "Falha ao carregar lista de clientes",
       color: "negative",
       icon: "report_problem",
     });
@@ -32,26 +50,18 @@ async function loadProducts() {
 }
 
 onMounted(() => {
-  loadProducts();
+  loadClients();
 });
 
 const columns = [
   { name: "id", field: "id", required: true, label: "Id" },
   {
-    name: "description",
-    field: "description",
+    name: "name",
+    field: "name",
     required: true,
-    label: "Descrição",
+    label: "Nome completo",
   },
-  { name: "manufacturer", field: "manufacturer", label: "Fabricante" },
-  { name: "cost", field: "cost", label: "Preço de custo (R$)" },
-  {
-    name: "price",
-    field: "price",
-    required: true,
-    label: "Preço de venda (R$)",
-  },
-  { name: "quantity", field: "quantity", label: "Quantidade em estoque" },
+  { name: "phone", field: "phone", label: "Telefone" },
   { name: "actions", label: "Ações" },
 ];
 </script>

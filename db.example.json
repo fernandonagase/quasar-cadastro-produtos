@@ -20,5 +20,13 @@
       "quantity": 50,
       "active": true
     }
+  ],
+  "clients": [
+    {
+      "id": "1",
+      "name": "Fernando da Silva",
+      "phone": "1633333333",
+      "active": true
+    }
   ]
 }

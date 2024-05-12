@@ -71,6 +71,16 @@ const routes = [
           ],
         },
       },
+      {
+        path: "vendas",
+        children: [
+          {
+            path: "",
+            name: "sales",
+            component: () => import("pages/SalesList.vue"),
+          },
+        ],
+      },
     ],
   },
   // Always leave this as last one,

@@ -28,5 +28,24 @@
       "phone": "1633333333",
       "active": true
     }
+  ],
+  "sales": [
+    {
+      "id": "1",
+      "clientid": "1",
+      "date": "2024-05-11T22:18:00Z",
+      "items": [
+        {
+          "id": "1",
+          "price": 75,
+          "quantity": 2
+        },
+        {
+          "id": "2",
+          "price": 15,
+          "quantity": 5
+        }
+      ]
+    }
   ]
 }

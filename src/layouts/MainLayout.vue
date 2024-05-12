@@ -4,7 +4,11 @@
       <q-toolbar>
         <q-btn flat round dense icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Header </q-toolbar-title>
+        <q-toolbar-title shrink>
+          <q-btn to="/" flat="">Header</q-btn>
+        </q-toolbar-title>
+
+        <q-btn :to="{ name: 'sales' }" flat>Vendas</q-btn>
       </q-toolbar>
     </q-header>
 

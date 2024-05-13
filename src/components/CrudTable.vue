@@ -1,5 +1,11 @@
 <template>
-  <q-table :title="title" :columns="columns" :rows="rows" :row-key="rowKey">
+  <q-table
+    :title="title"
+    :columns="columns"
+    :rows="rows"
+    :row-key="rowKey"
+    :sort-method="sortMethod"
+  >
     <template #top>
       <div class="q-ml-auto">
         <slot name="topActions"></slot>
@@ -18,5 +24,5 @@
 </template>
 
 <script setup>
-defineProps(["title", "columns", "rows", "rowKey"]);
+defineProps(["title", "columns", "rows", "rowKey", "sortMethod"]);
 </script>

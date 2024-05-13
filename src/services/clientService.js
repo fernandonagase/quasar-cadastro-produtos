@@ -12,6 +12,14 @@ async function getClientById(id) {
   return (await api.get(`${endpoint}/${id}`)).data;
 }
 
+async function getClientsForSales() {
+  const clients = await getClients();
+  return clients.map(({ id, name }) => ({
+    id,
+    name,
+  }));
+}
+
 async function postClient({ name, phone }) {
   const id = nanoid();
   const response = await api.post("clients", {
@@ -37,4 +45,10 @@ async function updateClient({ id, name, phone, active }) {
   }
 }
 
-export { getClients, getClientById, postClient, updateClient };
+export {
+  getClients,
+  getClientById,
+  getClientsForSales,
+  postClient,
+  updateClient,
+};

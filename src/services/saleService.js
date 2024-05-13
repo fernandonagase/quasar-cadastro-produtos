@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 import { api } from "boot/axios";
 import { getClientById } from "./clientService";
 
@@ -27,4 +29,13 @@ async function getSaleSummaryList() {
   );
 }
 
-export { getSales, getSaleSummaryList };
+function postSale({ date, clientid, items }) {
+  api.post(endpoint, {
+    id: nanoid(),
+    clientid,
+    date,
+    items,
+  });
+}
+
+export { getSales, getSaleSummaryList, postSale };

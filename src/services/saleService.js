@@ -29,6 +29,14 @@ async function getSaleSummaryList() {
   );
 }
 
+async function getSaleById(id) {
+  const sale = (await api.get(`${endpoint}/${id}`)).data;
+  return {
+    ...sale,
+    date: formatToDateInput(sale.date),
+  };
+}
+
 function postSale({ date, clientid, items }) {
   api.post(endpoint, {
     id: nanoid(),
@@ -38,4 +46,13 @@ function postSale({ date, clientid, items }) {
   });
 }
 
-export { getSales, getSaleSummaryList, postSale };
+function formatISODatetime(str) {
+  const date = new Date(str);
+  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+}
+
+function formatToDateInput(str) {
+  return str.slice(0, -4);
+}
+
+export { getSales, getSaleSummaryList, getSaleById, postSale };

@@ -11,6 +11,16 @@
           Nova venda
         </q-btn>
       </template>
+      <template #rowActions>
+        <q-btn
+          :to="{ name: 'client-edit', params: {} }"
+          color="primary"
+          icon="edit"
+          :aria-labelledby="`edit-label-a`"
+        >
+          <span :id="`edit-label-a`" hidden> Ver ou alterar {{ "eee" }} </span>
+        </q-btn>
+      </template>
       <template #bottomRow>
         <q-tr>
           <q-td colspan="3"></q-td>
@@ -52,6 +62,10 @@ const columns = [
     label: "Preço (R$)",
     required: true,
     sortable: true,
+  },
+  {
+    name: "actions",
+    label: "Ações",
   },
 ];
 

@@ -84,6 +84,11 @@ const routes = [
             name: "new-sale",
             component: () => import("pages/NewSale.vue"),
           },
+          {
+            path: ":saleid",
+            name: "edit-sale",
+            component: () => import("pages/EditSale.vue"),
+          },
         ],
       },
     ],

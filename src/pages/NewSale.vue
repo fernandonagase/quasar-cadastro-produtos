@@ -20,6 +20,7 @@
             :options="productOptions"
             label="Produtos"
           />
+          <ProductSelector />
         </fieldset>
       </div>
       <div class="row justify-end">
@@ -36,6 +37,7 @@ import { getProductsData } from "src/services/productService";
 import { getClientsForSales } from "src/services/clientService";
 import dayjs from "dayjs";
 import { postSale } from "src/services/saleService";
+import ProductSelector from "src/components/ProductSelector.vue";
 
 const client = ref(null);
 const clientOptions = ref(null);

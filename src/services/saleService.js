@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 
 import { api } from "boot/axios";
 import { getClientById } from "./clientService";
+import dayjs from "dayjs";
 
 const endpoint = "sales";
 
@@ -46,13 +47,22 @@ function postSale({ date, clientid, items }) {
   });
 }
 
+function updateSale({ id, date, clientid, items }) {
+  api.put(`${endpoint}/${id}`, {
+    id,
+    date,
+    clientid,
+    items,
+  });
+}
+
 function formatISODatetime(str) {
   const date = new Date(str);
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
 
-function formatToDateInput(str) {
-  return str.slice(0, -4);
+function formatToDateInput(isoStr) {
+  return dayjs(isoStr).format("YYYY-MM-DDTHH:mm");
 }
 
-export { getSales, getSaleSummaryList, getSaleById, postSale };
+export { getSales, getSaleSummaryList, getSaleById, postSale, updateSale };

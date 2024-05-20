@@ -33,20 +33,60 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
-import { getSaleById } from "src/services/saleService";
+import { getSaleById, updateSale } from "src/services/saleService";
+import { getClientsForSales } from "src/services/clientService";
+import { getProductsData } from "src/services/productService";
 
 const route = useRoute();
 
+const clientOptions = ref(null);
 const client = ref(null);
+const productOptions = ref(null);
+const products = ref(null);
 const date = ref(null);
 
 onMounted(async () => {
   const sale = await getSaleById(route.params.saleid);
-  // client.value = {
-  //   label: sale.name,
-
-  // }
   date.value = sale.date;
-  console.log(sale);
+
+  const clientsData = await getClientsForSales();
+  clientOptions.value = clientsData.map((client) => ({
+    label: client.name,
+    value: client.id,
+  }));
+
+  const currentUser = clientsData.find((cli) => cli.id === sale.clientid);
+  client.value = {
+    label: currentUser.name,
+    value: currentUser.id,
+  };
+
+  const productsData = await getProductsData();
+  productOptions.value = productsData.map((product) => ({
+    label: product.description,
+    value: product.id,
+    price: product.price,
+  }));
+  const currentProducts = productsData.filter((product) =>
+    sale.items.map((item) => item.id).includes(product.id)
+  );
+  products.value = currentProducts.map((product) => ({
+    label: product.description,
+    value: product.id,
+    price: product.price,
+  }));
 });
+
+function onSubmit() {
+  updateSale({
+    id: route.params.saleid,
+    date: date.value,
+    clientid: client.value.value,
+    items: products.value.map((product) => ({
+      id: product.value,
+      price: product.price,
+      quantity: 1,
+    })),
+  });
+}
 </script>

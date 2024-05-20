@@ -11,14 +11,16 @@
           Nova venda
         </q-btn>
       </template>
-      <template #rowActions>
+      <template #rowActions="{ row }">
         <q-btn
-          :to="{ name: 'client-edit', params: {} }"
+          :to="{ name: 'edit-sale', params: { saleid: row.id } }"
           color="primary"
           icon="edit"
-          :aria-labelledby="`edit-label-a`"
+          :aria-labelledby="`edit-label-${row.id}`"
         >
-          <span :id="`edit-label-a`" hidden> Ver ou alterar {{ "eee" }} </span>
+          <span :id="`edit-label-${row.id}`" hidden>
+            Ver ou alterar compra de {{ row.client }} em {{ row.date }}
+          </span>
         </q-btn>
       </template>
       <template #bottomRow>

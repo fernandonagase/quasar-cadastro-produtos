@@ -14,13 +14,12 @@
         </fieldset>
         <fieldset class="col">
           <legend>Itens</legend>
-          <q-select
-            multiple
-            v-model="products"
+          <ProductSelector
+            :products="products"
             :options="productOptions"
-            label="Produtos"
+            @add-product="onAddProduct"
+            @remove-product="onRemoveProduct"
           />
-          <ProductSelector />
         </fieldset>
       </div>
       <div class="row justify-end">
@@ -32,18 +31,18 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import dayjs from "dayjs";
 
 import { getProductsData } from "src/services/productService";
 import { getClientsForSales } from "src/services/clientService";
-import dayjs from "dayjs";
 import { postSale } from "src/services/saleService";
 import ProductSelector from "src/components/ProductSelector.vue";
 
 const client = ref(null);
 const clientOptions = ref(null);
 const date = ref(dayjs().format("YYYY-MM-DDTHH:mm"));
-const products = ref(null);
 const productOptions = ref(null);
+const products = ref([]);
 
 onMounted(async () => {
   const clientsData = await getClientsForSales();
@@ -59,14 +58,31 @@ onMounted(async () => {
   }));
 });
 
+function onAddProduct(id, description, quantity, unitprice) {
+  products.value = [
+    ...products.value,
+    {
+      id,
+      description,
+      quantity,
+      unitprice,
+      totalprice: quantity * unitprice,
+    },
+  ];
+}
+
+function onRemoveProduct(id) {
+  products.value = products.value.filter((product) => product.id !== id);
+}
+
 function onSubmit() {
   postSale({
     clientid: client.value.value,
     date: dayjs(date.value).toISOString(),
     items: products.value.map((product) => ({
-      id: product.value,
-      price: product.price,
-      quantity: 1,
+      id: product.id,
+      quantity: product.quantity,
+      price: product.unitprice,
     })),
   });
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-select v-model="model" :options="options" label="Produto" />
+    <q-select v-model="product" :options="options" label="Produto" />
     <q-input v-model.number="quantity" type="number" label="Quantidade" />
     <q-input v-model.number="unitprice" type="number" label="Preço Unit." />
     <q-input
@@ -9,6 +9,9 @@
       label="Preço total"
       readonly
     />
+    <q-btn color="primary" icon="add" @click="onAddProduct">
+      <VisuallyHidden>Adicionar produto</VisuallyHidden>
+    </q-btn>
   </div>
   <q-markup-table>
     <thead>
@@ -27,8 +30,16 @@
         <td>{{ product.unitprice }}</td>
         <td>{{ product.totalprice }}</td>
         <td>
-          <q-btn color="negative" icon="clear" />
+          <q-btn
+            color="negative"
+            icon="clear"
+            @click="onRemoveProduct(product.id)"
+          />
         </td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+        <td>{{ saleTotalPrice }}</td>
       </tr>
     </tbody>
   </q-markup-table>
@@ -36,19 +47,38 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import VisuallyHidden from "./VisuallyHidden.vue";
 
-const products = ref(null);
-products.value = [
-  {
-    id: 1,
-    description: "Jujuba louca",
-    quantity: 15,
-    unitprice: 2,
-    totalprice: 30,
-  },
-];
+const props = defineProps(["products", "options"]);
+const emit = defineEmits(["addProduct", "removeProduct"]);
 
-const quantity = ref(10);
-const unitprice = ref(10);
+const product = ref(null);
+const quantity = ref(0);
+const unitprice = ref(0);
 const totalprice = computed(() => quantity.value * unitprice.value);
+
+const saleTotalPrice = computed(() =>
+  props.products.reduce((acc, product) => acc + product.totalprice, 0)
+);
+
+function resetForm() {
+  product.value = null;
+  quantity.value = 0;
+  unitprice.value = 0;
+}
+
+function onAddProduct() {
+  emit(
+    "addProduct",
+    product.value.value,
+    product.value.label,
+    quantity.value,
+    unitprice.value
+  );
+  resetForm();
+}
+
+function onRemoveProduct(id) {
+  emit("removeProduct", id);
+}
 </script>

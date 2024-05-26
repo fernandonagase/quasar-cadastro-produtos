@@ -3,7 +3,7 @@
     <CrudTable
       title="Vendas"
       :columns="columns"
-      :rows="sales"
+      :rows="rows"
       :sortMethod="customSort"
     >
       <template #topActions>
@@ -22,6 +22,47 @@
             Ver ou alterar compra de {{ row.client }} em {{ row.date }}
           </span>
         </q-btn>
+        <q-btn color="secondary" icon="more_vert">
+          <q-menu>
+            <q-list bordered>
+              <q-item clickable v-ripple @click="showDeactivationDialog">
+                <q-item-section avatar>
+                  <q-icon name="delete_forever" color="negative" />
+                </q-item-section>
+                <q-item-section>Cancelar venda</q-item-section>
+                <q-dialog v-model="confirmDeactivation" persistent>
+                  <q-card>
+                    <q-card-section class="row items-center">
+                      <q-avatar
+                        icon="delete_forever"
+                        color="negative"
+                        text-color="white"
+                      />
+                      <span class="q-ml-sm">
+                        Você tem certeza de que quer cancelar a venda?
+                      </span>
+                    </q-card-section>
+                    <q-card-actions align="right">
+                      <q-btn
+                        flat
+                        label="Voltar"
+                        color="secondary"
+                        v-close-popup
+                      />
+                      <q-btn
+                        flat
+                        label="Cancelar venda"
+                        color="negative"
+                        @click="onCancelSale(row.id)"
+                        v-close-popup
+                      />
+                    </q-card-actions>
+                  </q-card>
+                </q-dialog>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </template>
       <template #bottomRow>
         <q-tr>
@@ -34,12 +75,12 @@
 </template>
 
 <script setup>
-import { useMeta } from "quasar";
+import { useMeta, useQuasar } from "quasar";
 import { computed, onMounted, ref } from "vue";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
-import { getSaleSummaryList } from "src/services/saleService";
+import { cancelSale, getSaleSummaryList } from "src/services/saleService";
 import CrudTable from "src/components/CrudTable.vue";
 
 dayjs.extend(customParseFormat);
@@ -47,6 +88,9 @@ dayjs.extend(customParseFormat);
 useMeta({
   title: "Listagem de vendas",
 });
+
+const $q = useQuasar();
+const confirmDeactivation = ref(false);
 
 const columns = [
   { name: "id", field: "id", label: "Id", required: true },
@@ -96,8 +140,11 @@ function customSort(rows, sortBy, descending) {
 }
 
 const sales = ref([]);
+const rows = computed(() => {
+  return sales.value.filter((sale) => sale.status === "Ativo");
+});
 const totalSales = computed(() =>
-  sales.value.reduce((acc, sale) => acc + sale.totalPrice, 0)
+  rows.value.reduce((acc, sale) => acc + sale.totalPrice, 0)
 );
 
 async function loadSales() {
@@ -107,4 +154,23 @@ async function loadSales() {
 onMounted(() => {
   loadSales();
 });
+
+function showDeactivationDialog(id) {
+  confirmDeactivation.value = true;
+}
+
+async function onCancelSale(id) {
+  try {
+    await cancelSale(id);
+    sales.value = sales.value.map((sale) =>
+      sale.id === id ? { ...sale, status: "Cancelado" } : sale
+    );
+  } catch (e) {
+    $q.notify({
+      message: "Falha ao cancelar venda",
+      color: "negative",
+      icon: "report_problem",
+    });
+  }
+}
 </script>

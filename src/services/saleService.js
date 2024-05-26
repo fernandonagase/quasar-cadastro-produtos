@@ -15,7 +15,7 @@ async function getSaleSummaryList() {
   const sales = await getSales();
 
   return Promise.all(
-    sales.map(async ({ id, clientid, date, items }) => {
+    sales.map(async ({ id, clientid, date, items, status }) => {
       const dateObj = new Date(date);
       return {
         id,
@@ -25,6 +25,7 @@ async function getSaleSummaryList() {
           (acc, item) => acc + item.quantity * item.price,
           0
         ),
+        status,
       };
     })
   );
@@ -44,16 +45,26 @@ function postSale({ date, clientid, items }) {
     clientid,
     date,
     items,
+    status: "Ativo",
   });
 }
 
 function updateSale({ id, date, clientid, items }) {
-  api.put(`${endpoint}/${id}`, {
+  api.patch(`${endpoint}/${id}`, {
     id,
     date,
     clientid,
     items,
   });
+}
+
+async function cancelSale(id) {
+  const resp = await api.patch(`${endpoint}/${id}`, {
+    status: "Cancelado",
+  });
+  if (resp.status !== 200) {
+    throw new Error("Falha ao cancelar venda");
+  }
 }
 
 function formatISODatetime(str) {
@@ -65,4 +76,11 @@ function formatToDateInput(isoStr) {
   return dayjs(isoStr).format("YYYY-MM-DDTHH:mm");
 }
 
-export { getSales, getSaleSummaryList, getSaleById, postSale, updateSale };
+export {
+  getSales,
+  getSaleSummaryList,
+  getSaleById,
+  postSale,
+  updateSale,
+  cancelSale,
+};

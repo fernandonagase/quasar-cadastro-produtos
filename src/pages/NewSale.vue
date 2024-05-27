@@ -31,12 +31,15 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import { useQuasar } from "quasar";
 import dayjs from "dayjs";
 
 import { getProductsData } from "src/services/productService";
 import { getClientsForSales } from "src/services/clientService";
 import { postSale } from "src/services/saleService";
 import ProductSelector from "src/components/ProductSelector.vue";
+
+const $q = useQuasar();
 
 const client = ref(null);
 const clientOptions = ref(null);
@@ -75,15 +78,23 @@ function onRemoveProduct(id) {
   products.value = products.value.filter((product) => product.id !== id);
 }
 
-function onSubmit() {
-  postSale({
-    clientid: client.value.value,
-    date: dayjs(date.value).toISOString(),
-    items: products.value.map((product) => ({
-      id: product.id,
-      quantity: product.quantity,
-      price: product.unitprice,
-    })),
-  });
+async function onSubmit() {
+  try {
+    await postSale({
+      clientid: client.value.value,
+      date: dayjs(date.value).toISOString(),
+      items: products.value.map((product) => ({
+        id: product.id,
+        quantity: product.quantity,
+        price: product.unitprice,
+      })),
+    });
+  } catch (e) {
+    $q.notify({
+      message: e.message,
+      color: "negative",
+      icon: "report_problem",
+    });
+  }
 }
 </script>

@@ -20,6 +20,15 @@
           <q-item clickable to="/">
             <q-item-section>Início</q-item-section>
           </q-item>
+          <q-item clickable to="/configuracoes">
+            <q-item-section avatar>
+              <q-icon name="settings" />
+            </q-item-section>
+            <q-item-section>Configurações</q-item-section>
+          </q-item>
+
+          <q-separator spaced />
+          <q-item-label header>Cadastros</q-item-label>
           <q-item clickable to="/produtos">
             <q-item-section>Produtos</q-item-section>
           </q-item>

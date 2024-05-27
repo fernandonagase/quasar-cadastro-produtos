@@ -3,7 +3,8 @@ import { nanoid } from "nanoid";
 import { api } from "boot/axios";
 import { getClientById } from "./clientService";
 import dayjs from "dayjs";
-import { sellProduct } from "./productService";
+import { hasEnoughInStock, sellProduct } from "./productService";
+import { getConfig } from "./settingService";
 
 const endpoint = "sales";
 
@@ -41,6 +42,19 @@ async function getSaleById(id) {
 }
 
 async function postSale({ date, clientid, items }) {
+  const allowNegativeQuantity = await getConfig(
+    "stock",
+    "allowNegativeQuantity"
+  );
+  if (!allowNegativeQuantity) {
+    const hasStock = await Promise.all(
+      items.map((item) => hasEnoughInStock(item.id, item.quantity))
+    );
+    const insufficientStockList = items.filter((_, index) => !hasStock[index]);
+    if (insufficientStockList.length > 0) {
+      throw new Error("Estoque insuficiente");
+    }
+  }
   const resp = await api.post(endpoint, {
     id: nanoid(),
     clientid,

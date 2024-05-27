@@ -91,6 +91,10 @@ const routes = [
           },
         ],
       },
+      {
+        path: "configuracoes",
+        component: () => import("pages/SettingsPage.vue"),
+      },
     ],
   },
   // Always leave this as last one,

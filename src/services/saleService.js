@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { api } from "boot/axios";
 import { getClientById } from "./clientService";
 import dayjs from "dayjs";
+import { sellProduct } from "./productService";
 
 const endpoint = "sales";
 
@@ -39,14 +40,19 @@ async function getSaleById(id) {
   };
 }
 
-function postSale({ date, clientid, items }) {
-  api.post(endpoint, {
+async function postSale({ date, clientid, items }) {
+  const resp = await api.post(endpoint, {
     id: nanoid(),
     clientid,
     date,
     items,
     status: "Ativo",
   });
+  if (resp.status === 201) {
+    items.forEach((item) => {
+      sellProduct(item.id, item.quantity);
+    });
+  }
 }
 
 function updateSale({ id, date, clientid, items }) {

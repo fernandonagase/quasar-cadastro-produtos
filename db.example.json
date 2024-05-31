@@ -45,7 +45,20 @@
           "price": 15,
           "quantity": 5
         }
-      ]
+      ],
+      "status": "Ativo"
     }
-  ]
+  ],
+  "suppliers": [
+    {
+      "id": "1",
+      "name": "Fornece Tudo",
+      "active": true
+    }
+  ],
+  "settings": {
+    "stock": {
+      "allowNegativeQuantity": true
+    }
+  }
 }

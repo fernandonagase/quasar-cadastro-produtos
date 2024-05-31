@@ -92,6 +92,36 @@ const routes = [
         ],
       },
       {
+        path: "compras",
+        children: [
+          {
+            path: "",
+            name: "purchases",
+            component: () => import("pages/PurchasesList.vue"),
+          },
+          {
+            path: "nova",
+            name: "new-purchase",
+            component: () => import("pages/NewPurchase.vue"),
+          },
+        ],
+      },
+      {
+        path: "fornecedores",
+        children: [
+          {
+            path: "",
+            name: "suppliers",
+            component: () => import("pages/supplier/SuppliersList.vue"),
+          },
+          {
+            path: "novo",
+            name: "new-supplier",
+            component: () => import("pages/supplier/NewSupplier.vue"),
+          },
+        ],
+      },
+      {
         path: "configuracoes",
         component: () => import("pages/SettingsPage.vue"),
       },

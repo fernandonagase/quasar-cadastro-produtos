@@ -1,0 +1,26 @@
+import { nanoid } from "nanoid";
+
+import { api } from "boot/axios";
+
+const endpoint = "suppliers";
+
+async function addSupplier({ name }) {
+  const resp = await api.post(endpoint, {
+    id: nanoid(),
+    name,
+    active: true,
+  });
+  if (resp.status !== 201) {
+    throw new Error("Falha ao criar fornecedor");
+  }
+}
+
+async function getSuppliers() {
+  const resp = await api.get(endpoint);
+  if (resp.status !== 200) {
+    throw new Error("Falha ao buscar fornecedores");
+  }
+  return resp.data;
+}
+
+export { addSupplier, getSuppliers };

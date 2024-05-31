@@ -9,6 +9,7 @@
         </q-toolbar-title>
 
         <q-btn :to="{ name: 'sales' }" flat>Vendas</q-btn>
+        <q-btn :to="{ name: 'purchases' }" flat>Compras</q-btn>
       </q-toolbar>
     </q-header>
 
@@ -34,6 +35,9 @@
           </q-item>
           <q-item clickable to="/clientes">
             <q-item-section>Clientes</q-item-section>
+          </q-item>
+          <q-item clickable :to="{ name: 'suppliers' }">
+            <q-item-section>Fornecedores</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>

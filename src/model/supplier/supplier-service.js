@@ -28,4 +28,8 @@ async function getSuppliersData() {
   return suppliers.map(({ id, name }) => ({ id, name }));
 }
 
-export { addSupplier, getSuppliers, getSuppliersData };
+async function getSupplierById(id) {
+  return (await api.get(`${endpoint}/${id}`)).data;
+}
+
+export { addSupplier, getSuppliers, getSuppliersData, getSupplierById };

@@ -23,4 +23,9 @@ async function getSuppliers() {
   return resp.data;
 }
 
-export { addSupplier, getSuppliers };
+async function getSuppliersData() {
+  const suppliers = await getSuppliers();
+  return suppliers.map(({ id, name }) => ({ id, name }));
+}
+
+export { addSupplier, getSuppliers, getSuppliersData };

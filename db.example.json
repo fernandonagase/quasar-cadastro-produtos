@@ -56,6 +56,15 @@
       "active": true
     }
   ],
+  "purchases": [
+    {
+      "id": "1",
+      "supplierid": "1",
+      "productid": "1",
+      "productquantity": 2,
+      "productcost": 50
+    }
+  ],
   "settings": {
     "stock": {
       "allowNegativeQuantity": true

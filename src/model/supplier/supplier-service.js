@@ -32,4 +32,20 @@ async function getSupplierById(id) {
   return (await api.get(`${endpoint}/${id}`)).data;
 }
 
-export { addSupplier, getSuppliers, getSuppliersData, getSupplierById };
+async function updateSupplier({ id, name, active }) {
+  const resp = await api.patch(`${endpoint}/${id}`, {
+    name,
+    active,
+  });
+  if (resp.status !== 200) {
+    throw new Error("Falha ao atualizar dados do fornecedor");
+  }
+}
+
+export {
+  addSupplier,
+  getSuppliers,
+  getSuppliersData,
+  getSupplierById,
+  updateSupplier,
+};

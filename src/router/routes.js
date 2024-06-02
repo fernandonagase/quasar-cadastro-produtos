@@ -119,6 +119,11 @@ const routes = [
             name: "new-supplier",
             component: () => import("pages/supplier/NewSupplier.vue"),
           },
+          {
+            path: ":supplierid",
+            name: "edit-supplier",
+            component: () => import("pages/supplier/EditSupplier.vue"),
+          },
         ],
       },
       {

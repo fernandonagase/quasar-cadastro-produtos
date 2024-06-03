@@ -25,4 +25,16 @@ async function sellProduct(productid, quantity) {
   api.patch(`${endpoint}/${productid}`, { quantity: remaining });
 }
 
-export { getProductsData, getProductById, hasEnoughInStock, sellProduct };
+async function purchaseProduct(productid, quantity) {
+  const product = await getProductById(productid);
+  const newQuantity = product.quantity + quantity;
+  api.patch(`${endpoint}/${productid}`, { quantity: newQuantity });
+}
+
+export {
+  getProductsData,
+  getProductById,
+  hasEnoughInStock,
+  sellProduct,
+  purchaseProduct,
+};

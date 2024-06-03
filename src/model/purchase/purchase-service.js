@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 
 import { api } from "boot/axios";
-import { getProductById } from "src/services/productService";
+import { getProductById, purchaseProduct } from "src/services/productService";
 import { getSupplierById } from "src/model/supplier/supplier-service";
 
 const endpoint = "purchases";
@@ -19,10 +19,10 @@ async function newPurchase({
     productquantity,
     productcost,
   });
-  console.log(resp.status);
   if (resp.status !== 201) {
     throw new Error("Falha ao concluir compra");
   }
+  purchaseProduct(productid, productquantity);
 }
 
 async function getPurchaseSummaries() {

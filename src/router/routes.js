@@ -104,6 +104,11 @@ const routes = [
             name: "new-purchase",
             component: () => import("pages/NewPurchase.vue"),
           },
+          {
+            path: ":purchaseid",
+            name: "edit-purchase",
+            component: () => import("pages/purchase/EditPurchase.vue"),
+          },
         ],
       },
       {

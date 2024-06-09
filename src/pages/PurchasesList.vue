@@ -9,6 +9,19 @@
           color="primary"
         />
       </template>
+      <template #rowActions="{ row }">
+        <q-btn
+          :to="{ name: 'edit-purchase', params: { purchaseid: row.id } }"
+          color="primary"
+          icon="edit"
+          :aria-labelledby="`edit-label-${row.id}`"
+        >
+          <span :id="`edit-label-${row.id}`" hidden>
+            Ver ou alterar compra de {{ row.productname }} em
+            {{ row.purchasedate }}
+          </span>
+        </q-btn>
+      </template>
     </CrudTable>
   </q-page>
 </template>
@@ -34,6 +47,7 @@ const columns = [
   { name: "totalcost", field: "totalcost", label: "Custo total (R$)" },
   { name: "suppliername", field: "suppliername", label: "Fornecedor" },
   { name: "purchasedate", field: "purchasedate", label: "Data da compra" },
+  { name: "actions", label: "Ações" },
 ];
 
 const purchases = ref([]);

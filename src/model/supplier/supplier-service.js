@@ -32,6 +32,13 @@ async function getSupplierById(id) {
   return (await api.get(`${endpoint}/${id}`)).data;
 }
 
+async function getSuppliersForSelect() {
+  const suppliers = (await api.get(endpoint)).data;
+  return suppliers
+    .filter((supplier) => supplier.active)
+    .map(({ id, name }) => ({ id, name }));
+}
+
 async function updateSupplier({ id, name, active }) {
   const resp = await api.patch(`${endpoint}/${id}`, {
     name,
@@ -47,5 +54,6 @@ export {
   getSuppliers,
   getSuppliersData,
   getSupplierById,
+  getSuppliersForSelect,
   updateSupplier,
 };

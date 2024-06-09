@@ -11,6 +11,7 @@ async function newPurchase({
   productid,
   productquantity,
   productcost,
+  purchasedate,
 }) {
   const resp = await api.post(endpoint, {
     id: nanoid(),
@@ -18,6 +19,7 @@ async function newPurchase({
     productid,
     productquantity,
     productcost,
+    purchasedate,
   });
   if (resp.status !== 201) {
     throw new Error("Falha ao concluir compra");
@@ -34,6 +36,7 @@ async function getPurchaseSummaries() {
       productquantity: purchase.productquantity,
       productcost: purchase.productcost,
       suppliername: (await getSupplierById(purchase.supplierid)).name,
+      purchasedate: purchase.purchasedate,
     }))
   );
 }

@@ -62,7 +62,8 @@
       "supplierid": "1",
       "productid": "1",
       "productquantity": 2,
-      "productcost": 50
+      "productcost": 50,
+      "purchasedate": "2024-06-08T22:18:00Z"
     }
   ],
   "settings": {

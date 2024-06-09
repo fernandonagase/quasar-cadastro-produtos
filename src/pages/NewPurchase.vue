@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <q-form @submit="onSubmit">
+      <q-input type="datetime-local" v-model="date" label="Data" stack-label />
       <q-select v-model="product" :options="productOptions" label="Produto" />
       <q-select
         v-model="supplier"
@@ -53,6 +54,7 @@ onMounted(async () => {
   }));
 });
 
+const date = ref(null);
 const product = ref(null);
 const productQuantity = ref(null);
 const productCost = ref(null);
@@ -67,6 +69,7 @@ async function onSubmit() {
       productquantity: productQuantity.value,
       productcost: productCost.value,
       supplierid: supplier.value.value,
+      purchasedate: new Date(date.value).toISOString(),
     });
     $q.notify({
       message: "Compra concluída com sucesso!",
